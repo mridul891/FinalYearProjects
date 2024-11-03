@@ -11,7 +11,7 @@ const Blog = () => {
           <div className="flex flex-col items-left  max-w-sm gap-5">
             <h1 className="text-2xl md:text-3xl font-bold ">RescueNet</h1>
             <p className="text-base text-gray-600 md:text-lg">
-              CerviCare aims to raise awareness and predict cervical cancer. Through education and early detection, it strives to reduce the incidence and impact of this disease, empowering individuals to take proactive steps towards better cervical health.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi necessitatibus ratione exercitationem quod. Debitis maiores a minus suscipit ipsam dignissimos optio sapiente dolore iusto quae, odit sed architecto, reprehenderit fuga!.
             </p>
           </div>
           <img src={img1} alt="image1" className="max-w-full max-h-64 md:max-h-80 object-cover ml-2 md:ml-4" />
@@ -26,7 +26,7 @@ const Blog = () => {
           <div className="flex flex-col items-left gap-5 max-w-sm">
             <h1 className="text-2xl md:text-3xl font-bold">RescueNet</h1>
             <p className="text-base md:text-lg text-gray-600">
-              CerviCare aims to raise awareness and predict cervical cancer. Through education and early detection, it strives to reduce the incidence and impact of this disease, empowering individuals to take proactive steps towards better cervical health.
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt error eveniet nisi, repellendus quasi repudiandae, praesentium ab aperiam beatae nostrum voluptatum iste ipsam consequatur debitis esse accusamus, nihil magni veritatis.
             </p>
           </div>
         </div>
