@@ -1,7 +1,7 @@
 import logo from "../assets/logo.png";
 const Navbar = () => {
   return (
-    <div className="w-full py-3 font-semibold bg-[#FEFBFB] px-10 sticky top-0 ">
+    <div className="w-full py-3 font-semibold bg-[#FEFBFB] sticky top-0 ">
       <div className=" flex justify-around items-center">
         <div className="flex items-center gap-3">
           <img src={logo} alt="Logo Image" className="w-14" />
@@ -9,9 +9,16 @@ const Navbar = () => {
         </div>
         <div className="hidden lg:block">
           <ul className="flex gap-10 items-center">
-            <li>About</li>
-            <li>Features</li>
-            <li>Team</li>
+            <li>
+              <a></a>About
+            </li>
+            <li>
+              <a href="#features">Features</a>
+            </li>
+            <li>
+              <a href="#team">Team</a>
+              
+            </li>
             <li>RescueNet</li>
           </ul>
         </div>
