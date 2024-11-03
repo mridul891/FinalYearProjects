@@ -5,8 +5,9 @@ import Team from "./Team";
 
 const LandingPage = () => {
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
+      {/* <Blog /> */}
       <Team />
       <Footer />
     </div>
