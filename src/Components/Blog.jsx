@@ -21,7 +21,7 @@ const Blog = () => {
       {/* Second Section */}
       <div className="flex flex-col md:flex-row flex-1 p-4 items-center justify-center">
         {/* Right Column (Text and Image Side-by-Side) */}
-        <div className="flex flex-1 items-center justify-center gap-5 flex-col lg:flex-row">
+        <div className="flex flex-1 items-center justify-center gap-5 flex-col-reverse md:flex-row lg:flex-row">
           <img src={img2} alt="image2" className="max-w-full max-h-64 md:max-h-80 object-cover mr-2 md:mr-4" />
           <div className="flex flex-col items-left gap-5 max-w-sm">
             <h1 className="text-2xl md:text-3xl font-bold">RescueNet</h1>
