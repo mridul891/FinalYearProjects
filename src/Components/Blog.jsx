@@ -30,7 +30,7 @@ const Blog = () => {
       {/* Second Section */}
       <div className="flex flex-col md:flex-row flex-1 p-4 items-center justify-center md:justify-between">
         {/* Right Column (Text and Image Side-by-Side) */}
-        <div className="flex flex-1 items-center justify-center gap-4 md:gap-[7rem] flex-col-reverse md:flex-row lg:flex-row">
+        <div className="flex flex-1 items-center justify-center gap-4 md:gap-[3rem] flex-col-reverse md:flex-row lg:flex-row">
           {/* image */}
           <div>
             <img
