@@ -3,7 +3,7 @@ import img2 from "../assets/d2.png";
 
 const Blog = () => {
   return (
-    <div className="flex flex-col overflow-hidden py-10 ">
+    <div className="flex flex-col overflow-hidden py-10 " id="about">
       {/* First Section */}
       <div className="flex flex-col md:flex-row flex-1 p-4 items-center justify-center md:justify-between">
         {/* Left Column (Text and Image Side-by-Side) */}
@@ -11,10 +11,9 @@ const Blog = () => {
           <div className="flex flex-col items-left  max-w-sm gap-5">
             <h1 className="text-2xl md:text-3xl font-bold ">RescueNet</h1>
             <p className="text-base text-gray-600 md:text-lg">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi
-              necessitatibus ratione exercitationem quod. Debitis maiores a
-              minus suscipit ipsam dignissimos optio sapiente dolore iusto quae,
-              odit sed architecto, reprehenderit fuga!.
+              RescueNet is an innovative real-time disaster response system
+              designed to revolutionize emergency management through the
+              application of cutting-edge technologies.
             </p>
           </div>
           <div>
@@ -41,12 +40,13 @@ const Blog = () => {
           </div>
           {/* data */}
           <div className="flex flex-col items-left gap-5 max-w-sm">
-            <h1 className="text-2xl md:text-3xl font-bold">RescueNet</h1>
+            {/* <h1 className="text-2xl md:text-3xl font-bold">RescueNet</h1> */}
             <p className="text-base md:text-lg text-gray-600">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-              error eveniet nisi, repellendus quasi repudiandae, praesentium ab
-              aperiam beatae nostrum voluptatum iste ipsam consequatur debitis
-              esse accusamus, nihil magni veritatis.
+              It aims to provide timely and actionable insights to rescue
+              teams and decision-makers, potentially saving lives and optimizing
+              relief efforts.The system&apos;s core functionality lies in its ability
+              to collect and analyze vast amounts of data from diverse sources,
+              including social media, news websites, and official channels.
             </p>
           </div>
         </div>

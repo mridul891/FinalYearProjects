@@ -1,10 +1,15 @@
-const Card = ({ src, name, Info }) => {
+
+const Card = ({ src, name, position }) => {
   return (
-    <div className="flex flex-col items-center gap-4 justify-between text-center">
-      <img src={src} alt="" className="w-[20rem] h-[15rem]" />
-      <div className="">
-        <h2 className="text-xl font-semibold">{name}</h2>
-        <p className="font-lg text-gray-600"> {Info}</p>
+    <div className="flex flex-col lg:px-10 pt-10 justify-center ">
+      {/* character image */}
+      <div className="bg-yellow-400 rounded-full overflow-hidden w-[5rem] ">
+        <img src={src} alt="" className="h-[5rem]" />
+      </div>
+      {/* Person information */}
+      <div className="mt-3">
+        <h1 className="font-semibold">{name}</h1>
+        <p className="text-violet-700">{position}</p>
       </div>
     </div>
   );

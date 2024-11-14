@@ -9,7 +9,7 @@ const LandingPage = () => {
     <div className="overflow-hidden">
       <Navbar />
       <Blog />
-      <Features />
+      {/* <Features /> */}
       <Team />
       <Footer />
     </div>

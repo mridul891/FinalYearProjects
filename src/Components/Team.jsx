@@ -1,54 +1,51 @@
 import Card from "./Card";
-import logo from "../assets/logo.png";
-import Box from "./Box";
+import logo from "../assets/c1.png";
+import logo2 from '../assets/c2.png'
+import logo3 from '../assets/c3.png'
+import logo4 from '../assets/c4.png'
+import logo5 from '../assets/c5.png'
+import logo6 from '../assets/c6.png'
+
 const Team = () => {
   return (
-    <section className="">
-      <div
-        className=" w-full flex justify-center items-center flex-col pt-10"
-        id="team"
-      >
-        <div className="text-4xl font-bold">Team</div>
-        <div className="flex flex-col md:flex-row  md:flex-wrap gap-5 mt-10  justify-center">
-          <Box>
-            <Card
-              src={logo}
-              name="Mridul Pandey"
-              Info={
-                "I transform challenges into digital solutions and development is my escape💡✨"
-              }
-            />
-          </Box>
-          <Box>
-            <Card
-              src={logo}
-              name="Mridul Pandey"
-              Info={
-                "I transform challenges into digital solutions and development is my escape💡✨"
-              }
-            />
-          </Box>
-          <Box>
-            <Card
-              src={logo}
-              name="Mridul Pandey"
-              Info={
-                "I transform challenges into digital solutions and development is my escape💡✨"
-              }
-            />
-          </Box>
-          <Box>
-            <Card
-              src={logo}
-              name="Mridul Pandey"
-              Info={
-                "I transform challenges into digital solutions and development is my escape💡✨"
-              }
-            />
-          </Box>
-        </div>
+    <div className="lg:px-[15rem] lg:mx-10" id="team">
+      <h1 className="text-3xl font-semibold text-center">
+        Let&apos;s Meet Our Team
+      </h1>
+
+      <div className="grid grid-col-2 lg:grid-cols-3  ">
+        <Card
+          src={logo4}
+          name={"Mridul Pandey"}
+          position={"Full Stack Developer"}
+        />
+        <Card
+          src={logo2}
+          name={"Anuj Negi"}
+          position={"Machine Learning Engineer"}
+        />
+        <Card
+          src={logo3}
+          name={"Harshit Singh"}
+          position={"Full Stack Developer"}
+        />
+        <Card
+          src={logo5}
+          name={"Dinesh Kumar"}
+          position={"Machine Learning Engineer"}
+        />
+        <Card
+          src={logo6}
+          name={"Riya Bisht"}
+          position={"Full Stack Developer"}
+        />
+        <Card
+          src={logo}
+          name={"Anand Tomar"}
+          position={"Full Stack Developer"}
+        />
       </div>
-    </section>
+    </div>
   );
 };
 

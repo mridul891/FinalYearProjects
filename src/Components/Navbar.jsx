@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 const Navbar = () => {
   return (
@@ -10,7 +11,7 @@ const Navbar = () => {
         <div className="hidden lg:block">
           <ul className="flex gap-10 items-center">
             <li>
-              <a></a>About
+              <a href="#about">About</a>
             </li>
             <li>
               <a href="#features">Features</a>
@@ -18,8 +19,9 @@ const Navbar = () => {
             <li>
               <a href="#team">Team</a>
             </li>
-            <li>RescueNet</li>
-            <li>DashBoard</li>
+            <li>
+              <Link to="/dashBoard">RescueNet Model</Link>
+            </li>
           </ul>
         </div>
       </div>
