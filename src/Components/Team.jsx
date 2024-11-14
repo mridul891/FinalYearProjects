@@ -8,12 +8,12 @@ import logo6 from '../assets/c6.png'
 
 const Team = () => {
   return (
-    <div className="lg:px-[18rem] lg:mx-10" id="team">
-      <h1 className="text-3xl font-semibold text-center">
+    <div className="lg:px-[18rem] lg:flex lg:flex-col lg:justify-center lg:items-center" id="team">
+      <h1 className="text-3xl font-semibold ">
         Let&apos;s Meet Our Team
       </h1>
 
-      <div className="grid grid-col-1 gap-4 md:grid-cols-2 lg:grid-cols-3  ">
+      <div className="grid grid-col-1 gap-15 md:grid-cols-2 lg:grid-cols-3 md:ml-20 ">
         <Card
           src={logo4}
           name={"Mridul Pandey"}
