@@ -35,7 +35,7 @@ const Blog = () => {
             <img
               src={img2}
               alt="image2"
-              className="max-w-full max-h-64 mt-3 md:max-h-80 object-cover mr-2 md:mr-4 "
+              className="max-w-full max-h-64 md:max-h-80 object-cover mr-2 md:mr-4 "
             />
           </div>
           {/* data */}
