@@ -1,7 +1,11 @@
 import { uniqueid } from "../model/uniqueId.js";
 import { user } from "../model/user.js";
-import bcrpyt from "bcryptjs";
+import bcrypt from "bcryptjs";
+
 const saltRound = 10;
+var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync("B4c0//", salt);
+
 export const singupController = async (req, res) => {
   const body = req.body;
 
@@ -14,14 +18,15 @@ export const singupController = async (req, res) => {
     });
   }
 
-  const hashedPassword = await bcrpyt.hash(body.password, saltRound);
-
   const validUser = await uniqueid.findOne({
     uniqueId: body.uniqueId,
   });
+
   if (!validUser) {
-    return res.status(400).json({ message: "Not a Ndrf Person " });
+    return res.status(400).json({ message: "Not a Valid Member of NDRF" });
   }
+  const hashedPassword = await bcrypt.hashSync(body.password, saltRound);
+
   await user.create({
     username: body.username,
     password: hashedPassword,
@@ -33,8 +38,29 @@ export const singupController = async (req, res) => {
   });
 };
 export const signinController = async (req, res) => {
-  res.json({
-    message: "Sign in successfull",
+  const body = req.body;
+
+  const userPresent = await user.findOne({
+    username: body.username,
+  });
+
+  if (!userPresent) {
+    return res
+      .status(400)
+      .json({ message: " User is not Present please Register " });
+  }
+
+  bcrypt.compare(body.password, userPresent.password, (err, isMatch) => {
+    if (err) throw err;
+    if (isMatch) {
+      return res.status(200).json({
+        message: "Sign in Successfull",
+      });
+    } else {
+      return res.status(400).json({
+        message: "Password Incorrect",
+      });
+    }
   });
 };
 
