@@ -1,6 +1,5 @@
 import express from 'express'
 import mainRouter from './routes/main.js'
-import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import connectDb from './ConnectDB/index.js';
 import cors from 'cors'
