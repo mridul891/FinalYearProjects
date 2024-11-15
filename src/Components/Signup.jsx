@@ -2,12 +2,22 @@ import { useState } from "react";
 import { Label } from "./ui/label";
 import { Link } from "react-router-dom";
 
-
-
 export function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [uniqueId , setUniqueId] =useState("")
+  const [uniqueId, setUniqueId] = useState("");
+
+  const handleSubmit = async () => {
+    const resposne = await axios.post(
+      "http://localhost:3000/api/v1/user/signin",
+      { username, password }
+    );
+
+    const token = await resposne.data.token;
+    localStorage.setItem("sihToken", token);
+    navigate("/dashboard");
+  };
+
   return (
     <div className="w-full bg-black text-white h-full flex justify-center items-center ">
       <div className=" p-10 flex flex-col justify-center w-full gap-2 lg:gap-4 lg:w-[40%] ">
@@ -29,7 +39,7 @@ export function Signup() {
             className="text-md rounded-xl px-5 py-2 font-semibold text-black"
             onChange={(e) => setPassword(e.target.value)}
           />
-           <Label className="text-2xl">Uniqueid</Label>
+          <Label className="text-2xl">Uniqueid</Label>
           <input
             placeholder="b12de"
             className="text-md rounded-xl px-5 py-2 font-semibold text-black"

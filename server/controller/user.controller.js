@@ -70,27 +70,27 @@ export const signinController = async (req, res) => {
         .json({ message: " User is not Present please Register " });
     }
 
-    bcrypt.compare(body.password, userPresent.password, (err, isMatch) => {
-      if (err) throw err;
-      if (isMatch) {
-        return res.status(200).json({
-          message: "Sign in Successfull",
-        });
-      } else {
-        return res.status(400).json({
-          message: "Password Incorrect",
-        });
+    await bcrypt.compare(
+      body.password,
+      userPresent.password,
+      (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) {
+          const token = jwt.sign(
+            { username: userPresent.username, id: userPresent._id },
+            SECRET
+          );
+
+          return res.status(200).json({
+            token: token,
+          });
+        } else {
+          return res.status(400).json({
+            message: "Password Incorrect",
+          });
+        }
       }
-    });
-
-    const token = jwt.sign(
-      { username: userPresent.username, id: userPresent._id },
-      SECRET
     );
-
-    res.json({
-      token: token,
-    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: " Error while Sign in" });
