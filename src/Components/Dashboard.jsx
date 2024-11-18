@@ -40,11 +40,11 @@ const Dashboard = () => {
   const [date, setDate] = useState(new Date());
   const [isLoaded, setLoaded] = useState(true);
 
-  useEffect(() => {
-    if (!localStorage.getItem("sihToken")) {
-      navigate("/signin");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (!localStorage.getItem("sihToken")) {
+  //     navigate("/signin");
+  //   }
+  // }, [navigate]);
 
   return (
     <section className="h-screen w-screen border-2 border-lime-500 bg-gray-200 overflow-hidden">
