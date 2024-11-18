@@ -14,6 +14,8 @@ const Dashboard = () => {
 
     setData(response.data);
     setLoaded(true);
+
+    
   };
 
   useEffect(() => {
