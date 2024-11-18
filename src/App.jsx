@@ -19,7 +19,7 @@ const App = () => {
           },
         }}
       />
-      <div className="h-screen w-screen bg-[#FEFBFB]">
+      <div className="h-max w-screen bg-[#FEFBFB]">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
