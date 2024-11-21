@@ -39,12 +39,24 @@ const Dashboard = () => {
   ]);
   const [date, setDate] = useState(new Date());
   const [isLoaded, setLoaded] = useState(true);
+  const [newData, setNewData] = useState([]);
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem("sihToken")) {
-  //     navigate("/signin");
-  //   }
-  // }, [navigate]);
+  const handleFetch = async () => {
+    const response = await axios.get(
+      "https://webscrapper-bmoc.onrender.com/info"
+    );
+    // console.log(response.data);
+    await response.data.map(async (elem) => {
+      const value = await axios.post("http://localhost:3000/predict", {
+        text: elem.title,
+      });
+      console.log({
+        title: elem.title,
+        result: value.data.result,
+        score: value.data.score,
+      });
+    });
+  };
 
   return (
     <section className="h-screen w-screen border-2 border-lime-500 bg-gray-200 overflow-hidden">
@@ -108,10 +120,7 @@ const Dashboard = () => {
           <div className="flex flex-col gap-4 flex-1 overflow-hidden">
             <div className="p-4 bg-green-200 rounded flex-1">
               <h2 className="text-lg font-semibold mb-3">Overview</h2>
-              <p>
-                This section can contain summary details or quick-access widgets
-                for relevant insights.
-              </p>
+              <button onClick={handleFetch}>Fetch</button>
             </div>
             <div className="p-4 bg-white rounded flex-1 overflow-hidden">
               <h2 className="text-lg font-semibold mb-3">Analytics</h2>
