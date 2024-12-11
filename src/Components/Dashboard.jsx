@@ -1,65 +1,157 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Calendar from "react-calendar";
-import { useNavigate } from "react-router-dom";
+
 import "react-calendar/dist/Calendar.css";
-import { SimpleLineChart } from "./SimpleLineChart";
+import LeftSideDashBoard from "./LeftSideDashBoard";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  const [date, setDate] = useState(new Date());
+  const [isLoaded, setLoaded] = useState(false);
+  // const [newData, setNewData] = useState([]);
+  const [type, setType] = useState("Flood");
+  const [info, setInfo] = useState(false);
   const [data, setData] = useState([
     {
-      title:
-        "Severe Flood Hits Dhemaji District, Assam, displacing over 120,000 residents, causing 125 fatalities, and destroying 60% of the district's agricultural fields. Emergency teams are providing relief supplies as water levels remain high.",
+      id: 1,
+      types: "Flood",
+      news: "Mumbai have floods",
     },
     {
-      title:
-        "Massive Earthquake of magnitude 7.5 strikes Ankara Region, Turkey, leaving over 500 dead, 1,500 injured, and thousands homeless. Rescue operations are ongoing as aftershocks continue to shake the region.",
+      id: 2,
+      types: "Earthquake",
+      news: "Delhi have Earthquake of 6.4 frequency",
     },
     {
-      title:
-        "Cyclone Vayu devastates coastal Odisha with winds reaching 150 km/h, causing 30 fatalities, power outages in over 500 villages, and disrupting transportation networks. Relief shelters are accommodating 50,000 evacuees.",
-    },
-    {
-      title:
-        "Raging Wildfire spreads rapidly across Los Angeles suburbs, destroying 500 homes, displacing 20,000 residents, and leading to hazardous air quality across the city. Firefighters are battling to control the blaze amid strong winds.",
-    },
-    {
-      title:
-        "Heavy Rain Triggers Landslide in Pokhara, Nepal, burying 25 homes, blocking major highways, and leaving 50 residents missing. Rescue teams are using heavy machinery to clear debris and search for survivors.",
-    },
-    {
-      title:
-        "Tsunami Hits Indonesian Coast after a 7.8 magnitude earthquake, affecting 200,000 people, destroying coastal villages, and leading to a death toll of over 800. International aid has been mobilized to assist in recovery efforts.",
-    },
-    {
-      title:
-        "Hurricane Laura ravages Louisiana, USA, with sustained winds of 140 mph, causing widespread flooding, power outages for 1.5 million residents, and damages estimated at $15 billion. FEMA teams are on the ground assisting survivors.",
+      id: 3,
+      types: "Cyclone",
+      news: "Cyclone in telanga",
+    }, {
+      id: 4,
+      types: "Forest Fire",
+      news: "Forest Fire in Uttrakhand",
     },
   ]);
-  const [date, setDate] = useState(new Date());
-  const [isLoaded, setLoaded] = useState(true);
-  const [newData, setNewData] = useState([]);
+
+  const disasterType = [
+    {
+      id: 1,
+      disasterTypes: "Flood",
+    },
+    {
+      id: 2,
+      disasterTypes: "Earthquake",
+    },
+    {
+      id: 3,
+      disasterTypes: "Cyclone",
+    },
+    {
+      id: 4,
+      disasterTypes: "Forest Fire",
+    },
+    // {
+    //   id: 5,
+    //   disasterTypes: "Landslide",
+    // },
+    // {
+    //   id: 6,
+    //   disasterTypes: "Tsunami",
+    // },
+    // {
+    //   id: 7,
+    //   disasterTypes: "Heat wave",
+    // },
+    // {
+    //   id: 8,
+    //   disasterTypes: "Avalanche",
+    // },
+    // {
+    //   id: 9,
+    //   disasterTypes: "Miscellaneous",
+    // },
+  ];
 
   const handleFetch = async () => {
     const response = await axios.get(
       "https://webscrapper-bmoc.onrender.com/info"
     );
+    console.log(response.data);
+    let newData = [];
     // console.log(response.data);
     await response.data.map(async (elem) => {
-      const value = await axios.post("http://localhost:3000/predict", {
-        text: elem.title,
+      const value1 = await axios.post("http://localhost:5001/translate",{
+        message : elem.title
+      })
+      const value = await axios.post("http://localhost:3001/analyze", {
+        text: value1.title,
       });
+
+      
       console.log({
-        title: elem.title,
+        title: value1.message,
         result: value.data.result,
         score: value.data.score,
       });
+      newData = [
+        ...newData,
+        {
+          title: value1.message,
+          result: value.data.result,
+          score: value.data.score,
+        },
+      ];
+      console.log(newData);
+      setData(newData);
     });
   };
 
+  useEffect(() => {
+    handleFetch();
+  }, []);
+
+  // useEffect(() => {
+  //   const dbRef = ref(database, "message");
+
+  //   // Listen for data changes
+
+  //   // Get the dataF
+  //   get(dbRef)
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         // Convert Firebase snapshot to an array of objects
+  //         const data = snapshot.val();
+  //         const reportsArray = Object.keys(data).map((key) => ({
+  //           id: key,
+  //           ...data[key],
+  //         }));
+  //         console.log(reportsArray);
+  //         setData(reportsArray);
+  //       } else {
+  //         console.log("No data available");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error reading data: ", error);
+  //     });
+  // }, []);
+
+  const [timelineData, setTimelineData] = useState([
+    {
+      id: 2,
+      news: [
+        {
+          title: "Fuck ",
+        },
+        {
+          title: "this game",
+        },
+      ],
+    },
+  ]);
+
   return (
-    <section className="h-screen w-screen border-2 border-lime-500 bg-gray-200 overflow-hidden">
+    <section className="h-screen w-screen  bg-gray-200 overflow-hidden">
       {/* Heading */}
       <div className="h-full flex flex-col">
         {/* Top Section */}
@@ -105,28 +197,60 @@ const Dashboard = () => {
           <div className="flex flex-col gap-4 flex-1 overflow-y-auto">
             <div className="p-4  rounded flex-1">
               <h2 className="text-lg font-semibold mb-3">Recent Incidents</h2>
-              {data.map((elem, index) => (
-                <div
-                  key={index}
-                  className="bg-white p-4 mb-4 rounded-xl shadow text-gray-700"
-                >
-                  {elem.title}
-                </div>
-              ))}
+              <select
+                onChange={(e) => setType(e.target.value)}
+                className="mb-4 rounded-lg p-2"
+              >
+                {disasterType.map((elem) => (
+                  <option key={elem.id}>{elem.disasterTypes}</option>
+                ))}
+              </select>
+
+              {data
+                .filter((el) => el.types === type)
+                .map((elem, index) => (
+                  <div
+                    key={index}
+                    className="bg-white p-4 mb-4 rounded-xl shadow text-gray-700"
+                  >
+                    <strong>
+                      {elem.news}
+                      {/* <button
+                        className="bg-blue-500 ml-10"
+                        onClick={() => setInfo((info) => !info)}
+                      >
+                        {"<"}
+                      </button> */}
+                    </strong>
+
+                    {info && (
+                      <div>
+                        {timelineData.map((el) => {
+                          el.news[0];
+                        })}
+                      </div>
+                    )}
+                    <div className="flex gap-10 mt-3">
+                      <button className="bg-black text-white px-5 py-2 rounded-xl">
+                        Send to Rescue Team
+                      </button>
+                      <button className="bg-black text-white px-5 py-2 rounded-xl">
+                        Send to Police Team
+                      </button>
+                      <button className="bg-black text-white px-5 py-2 rounded-xl">
+                        Ignore
+                      </button>
+                      <button className="bg-black text-white px-5 py-2 rounded-xl">
+                        Summarize
+                      </button>
+                    </div>
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* Column 2 */}
-          <div className="flex flex-col gap-4 flex-1 overflow-hidden">
-            <div className="p-4 bg-green-200 rounded flex-1">
-              <h2 className="text-lg font-semibold mb-3">Overview</h2>
-              <button onClick={handleFetch}>Fetch</button>
-            </div>
-            <div className="p-4 bg-white rounded flex-1 overflow-hidden">
-              <h2 className="text-lg font-semibold mb-3">Analytics</h2>
-              <SimpleLineChart />
-            </div>
-          </div>
+          <LeftSideDashBoard />
         </div>
       </div>
     </section>
