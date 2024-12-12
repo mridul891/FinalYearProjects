@@ -12,9 +12,7 @@ const Team = () => {
       className="lg:px-[18rem] lg:flex lg:flex-col lg:justify-center lg:items-center"
       id="team"
     >
-      <h1 className="text-3xl font-semibold px-10 md:px-0">
-        The People Who Make It Happen
-      </h1>
+      
 
       <div className="grid grid-col-1 gap-15 md:grid-cols-2 lg:grid-cols-3 md:ml-20 ">
         <Card
@@ -48,6 +46,7 @@ const Team = () => {
           position={"Machine Learning Engineer"}
         />
       </div>
+      <h1 className="mt-10 text-3xl font-bold text-center mb-8">Dronacharya Group Of Institutions <br></br> Greater Noida ,UP</h1>
     </div>
   );
 };

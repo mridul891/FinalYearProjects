@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -12,7 +13,7 @@ const userSchema = new mongoose.Schema({
   uniqueId: {
     type: String,
     required: true,
-  }
+  },
 });
 
 export const user = mongoose.model("user", userSchema);

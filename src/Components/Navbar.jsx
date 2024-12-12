@@ -1,26 +1,24 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import logo2 from "../assets/header.png";
 const Navbar = () => {
   return (
-    <div className="w-full py-3 font-semibold bg-[#FEFBFB] sticky top-0 ">
-      <div className=" flex justify-around items-center">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="Logo Image" className="w-14" />
-          <p>RescueNet</p>
-        </div>
+    <div className="w-full  font-semibold bg-[#FEFBFB] sticky top-0 h-10 ">
+      <div className=" flex justify-around items-center mt-5 ">
         <div className="hidden lg:block">
-          <ul className="flex gap-10 items-center">
+          <ul className="flex gap-10 items-center text-xl font-semibold text-orange-500">
             <li>
-              <a href="#about">About</a>
+              <Link to={"/"}>Home</Link>
             </li>
             <li>
-              <a href="#features">Features</a>
+              <Link to={"/about"}>About</Link>
+            </li>
+
+            <li>
+              <Link to="/finaldashBoard">Disaster Report Dashboard</Link>
             </li>
             <li>
-              <a href="#team">Team</a>
-            </li>
-            <li>
-              <Link to="/dashBoard">RescueNet Model</Link>
+              <Link to={"/team"}>Team</Link>
             </li>
           </ul>
         </div>

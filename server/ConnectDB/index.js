@@ -1,14 +1,10 @@
-import mongoose from "mongoose";
+import connectDb from './db.js';
 
-const connectDb = async () => {
-    try {
-        console.log("Wait Connecting to the server")
-        const connectionInstance = await mongoose.connect(`${process.env.MONGODB_CONNECTION_STRING}`);
-        console.log(`\n MongoDb Connected !! DB HOST : ${connectionInstance.connection.host}`)
-    } catch (error) {
-        console.log("MongoDb Connection error", error);
-        process.exit(1);
-    }
-}
 
-export default connectDb;   
+const startServer = async () => {
+  await connectDb();
+  console.log("Server is ready to start...");
+  
+};
+
+startServer();

@@ -2,16 +2,21 @@ import { Route, Routes } from "react-router-dom";
 import LandingPage from "./Components/LandingPage";
 import { Signin } from "./Components/Signin";
 import { Signup } from "./Components/Signup";
-import Dashboard from "./Components/Dashboard";
 import { Toaster } from "react-hot-toast";
 import News from "./Components/News";
 import FinalDashboard from "./Components/FinalDashboard";
+import logo2 from "./assets/header.png";
+import Duties from "./Components/Duties";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
+import Team from "./Components/Team";
+import ArchiveBox from "./Components/Archieve";
 
 const App = () => {
   return (
     <>
       <Toaster
-        position="top-right"
+        position="top-center"
         toastOptions={{
           success: {
             theme: {
@@ -20,16 +25,23 @@ const App = () => {
           },
         }}
       />
-      <div className="h-max w-screen bg-[#FEFBFB]">
+      <div className="h-screen w-screen bg-[#FEFBFB]">
+        <img src={logo2} />
+        <Navbar />
+
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/about" element={<Duties />} />
           <Route path="/signin" element={<Signin />} />
+          <Route path="/team" element={<Team />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/news" element={<News />} />
           <Route path="/finaldashboard" element={<FinalDashboard />} />
+          <Route path="/archieve" element={<ArchiveBox />} />
 
         </Routes>
+
+        <Footer />
       </div>
     </>
   );
