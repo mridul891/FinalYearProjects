@@ -1,329 +1,200 @@
-import img from "../assets/image.png";
-
-import clock from "../assets/clock.png";
 import { useEffect, useState } from "react";
-import axios from "axios";
-
-import toast from "react-hot-toast";
-import sound from "../assets/sound.mp3";
 import { useNavigate } from "react-router-dom";
-import Map from "./Map";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+
+import img from "../assets/image.png";
+import clock from "../assets/clock.png";
 
 const FinalDashboard = () => {
-  const [isLoaded, setLoaded] = useState(true);
-  const [isArchived, setIsArchived] = useState(false);
-  const [isSummarized, setIsSummarized] = useState(false);
-  const [isTimeline, setIsTimeline] = useState(false);
+  const [newsData, setNewsData] = useState([]);
+  const [summarizedItems, setSummarizedItems] = useState({});
+  const [timelineItems, setTimelineItems] = useState({});
 
-  const disasterType = [
-    { id: 1, disasterTypes: "Flood" },
-    { id: 2, disasterTypes: "Earthquake" },
-    { id: 3, disasterTypes: "Cyclone" },
-    { id: 4, disasterTypes: "Forest Fire" },
-    { id: 5, disasterTypes: "Landslides" },
-    { id: 6, disasterTypes: "Avalanche" },
-    { id: 7, disasterTypes: "Heatwaves" },
-  ];
-
-  const stateName = [
-    { id: 1, name: "Andhra Pradesh" },
-    { id: 2, name: "Arunachal Pradesh" },
-    { id: 3, name: "Assam" },
-    // ... (rest of the states remain the same)
-    { id: 28, name: "West Bengal" },
-  ];
-
-  const monthName = [
-    { id: 0, name: "January" },
-    { id: 1, name: "February" },
-    { id: 2, name: "March" },
-    { id: 3, name: "April" },
-    { id: 4, name: "May" },
-    { id: 5, name: "June" },
-    { id: 6, name: "July" },
-    { id: 7, name: "August" },
-    { id: 8, name: "September" },
-    { id: 9, name: "October" },
-    { id: 10, name: "November" },
-    { id: 11, name: "December" },
-  ];
-
-  const navigate = useNavigate();
   const [type, setType] = useState("Earthquake");
-  const [selectedState, setSelectedState] = useState("Andhra Pradesh");
-  const [selectedMonth, setSelectedMonth] = useState("January");
-  const [date, setDate] = useState("");
-  const [summary, setsummary] = useState("");
-  const [timeline, setTimeline] = useState("");
-  const [newsdata, setNewsData] = useState([
-    {
-      id: 1,
-      desc: "Asdf",
-      link: "https://google.com",
-    },
-  ]);
+  const navigate = useNavigate();
 
-  const handleFetch = async () => {
+  const disasterTypes = [
+    "Flood", "Earthquake", "Cyclone", "Forest Fire", "Landslides", "Avalanche", "Heatwaves"
+  ];
+
+  const fetchNews = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3005/api/v1/news/news"
-      );
-      setNewsData(response.data);
-    } catch (error) {
-      console.error("Error fetching news:", error);
+      const res = await axios.post("http://localhost:2000/api/v1/news/news");
+      setNewsData(res.data);
+    } catch (err) {
+      console.error("Error fetching news:", err);
+      toast.error("Failed to load news data.");
     }
   };
-  const playSound = () => {
-    const audio = new Audio(sound);
-    audio.play().catch((error) => {
-      console.error("Error playing audio:", error);
-    });
+
+  const handleTranslate = async (desc, id) => {
+    try {
+      const res = await axios.post("http://localhost:5001/translate", { message: desc });
+      setSummarizedItems(prev => ({ ...prev, [id]: res.data.message.content }));
+    } catch (err) {
+      toast.error("Translation failed.");
+    }
   };
 
-  const handleTimeline = async (news) => {
-    const response = await axios.post("http://localhost:5001/info", {
-      message: news,
-    });
-    setIsTimeline(true)
-    setTimeline(response.data.message.content);
+  const handleTimeline = async (desc, id) => {
+    try {
+      const res = await axios.post("http://localhost:5001/info", { message: desc });
+      setTimelineItems(prev => ({ ...prev, [id]: res.data.message.content }));
+    } catch (err) {
+      toast.error("Timeline generation failed.");
+    }
   };
 
   useEffect(() => {
-    handleFetch();
-
-    const timeout = setTimeout(async () => {
-      playSound();
-      toast.error("EarthQuake ALert", {
-        duration: 15000,
-      });
-    }, 4000);
-
-    return () => clearTimeout(timeout);
+    fetchNews();
   }, []);
 
-  const handleTranslate = async (desc) => {
-    console.log(desc);
-    const response = await axios.post("http://localhost:5001/translate", {
-      message: desc,
-    });
-    setIsSummarized(true);
-    setTimeline(response.data.message.content);
-  };
-
   return (
-    <div className="bg-slate-50 min-h-screen p-6 font-sans">
-      <div className="container mx-auto">
-        <h1 className="text-4xl font-bold text-center text-slate-800 mb-8">
-          Disaster Report Dashboard
-        </h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gradient-to-br from-emerald-50 to-white p-6 font-sans"
+    >
+      <div className="max-w-7xl mx-auto">
+        <motion.h1
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-extrabold text-center text-emerald-700 mb-10"
+        >
+          🌍 Disaster Report Dashboard
+        </motion.h1>
 
-        {/* Filters Section */}
-        <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Disaster Type
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-              >
-                {disasterType.map((elem) => (
-                  <option key={elem.id} value={elem.disasterTypes}>
-                    {elem.disasterTypes}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Date
-              </label>
-              <input
-                onChange={(e) => setDate(e.target.value)}
-                type="date"
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              />
-            </div>
-
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                State
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                value={selectedState}
-                onChange={(e) => setSelectedState(e.target.value)}
-              >
-                {stateName.map((elem) => (
-                  <option key={elem.id} value={elem.name}>
-                    {elem.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Month
-              </label>
-              <select
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-              >
-                {monthName.map((elem) => (
-                  <option key={elem.id} value={elem.name}>
-                    {elem.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="col-span-1 flex items-end">
-              <button className="w-full px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                Miscellaneous
-              </button>
-            </div>
-
-            <div className="col-span-1 flex items-end">
-              <button
-                onClick={() => navigate("/archieve")}
-                className="w-full px-4 py-2 bg-slate-600 text-white rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
-              >
-                Archive
-              </button>
-            </div>
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white shadow-2xl rounded-3xl p-6 mb-12"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <SelectInput label="Disaster Type" value={type} setValue={setType} options={disasterTypes} />
           </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <ReportSection
+            title="Latest Reports"
+            icon={img}
+            data={newsData.filter(n => n.latest)}
+            summarizedItems={summarizedItems}
+            timelineItems={timelineItems}
+            onSummarize={handleTranslate}
+            onTimeline={handleTimeline}
+            wide
+          />
+          <ReportSection
+            title="Recent Reports"
+            icon={clock}
+            data={newsData.filter(n => n.disasterType === type)}
+            summarizedItems={summarizedItems}
+            timelineItems={timelineItems}
+            onSummarize={handleTranslate}
+            onTimeline={handleTimeline}
+          />
         </div>
-        {/* is archieved  */}
-        
 
-        {/* Reports Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Latest Reports */}
-          <div className="md:col-span-2 bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
-              <img src={img} alt="" className="h-8 w-8 mr-3" />
-              Latest Reports
-            </h2>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {isLoaded &&
-                newsdata
-                  .filter(
-                    (e) => e.latest === true
-                    // e.disasterType === type ||
-                    // e.date === date
-                  )
-                  .map((el) => (
-                    <div
-                      key={el._id}
-                      className={`${
-                        el.latest == true ? "bg-green-200" : "bg-slate-100"
-                      } p-4 rounded-md border border-slate-200 flex justify-between items-center `}
-                    >
-                      <div className="">
-                        <h1 className="font-bold">{el.date}</h1>
-                        <p className="text-slate-700 flex-grow pr-4">
-                          {el.news}
-
-                          {isSummarized && (
-                            <div>
-                              <h1 className="font-bold text-xl mt-1 ">
-                                Summary :{" "}
-                              </h1>
-                              <p className="font-semibold">{summary}</p>
-                            </div>
-                          )}
-
-                          {isTimeline && (
-                            <div>
-                              <h1 className="font-bold text-xl mt-1 ">
-                                Timeline :{" "}
-                              </h1>
-                              <p className="font-semibold">{timeline}</p>
-                            </div>
-                          )}
-                        </p>
-                      </div>
-                      <div>
-                        <a
-                          href={el.link}
-                          className="text-emerald-600 font-bold hover:text-emerald-800 mr-2"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Source
-                        </a>
-
-                        <button
-                          className="bg-white p-2 rounded-md"
-                          onClick={() => handleTranslate(el.desc)}
-                        >
-                          Summarize
-                        </button>
-
-                        <button
-                          className="bg-white p-2 rounded-md ml-2"
-                          onClick={() => handleTimeline(el.desc)}
-                        >
-                          Timeline
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-
-          {/* Recent Reports */}
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-4 flex items-center">
-              <img src={clock} alt="" className="h-8 w-8 mr-3" />
-              Recent Reports
-            </h2>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {isLoaded &&
-                newsdata
-                  .filter(
-                    (e) => e.disasterType === type
-                    // e.date === date
-                  )
-                  .map((el) => (
-                    <div
-                      key={el._id}
-                      className="bg-slate-100 p-4 rounded-md border border-slate-200 flex justify-between items-center"
-                    >
-                      <p className="text-slate-700 flex-grow pr-4">{el.news}</p>
-
-                      <div>
-                        <a
-                          href={el.link}
-                          className="text-emerald-600 hover:text-emerald-800 font-medium"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Source
-                        </a>
-                        <button
-                          className="bg-white p-2 rounded-md"
-                          onClick={() => handleTimeline(el.desc)}
-                        >
-                          Summarize
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-            </div>
-          </div>
-        </div>
-        <button className="bg-blue-400 text-white p-2 mt-2">
-          Today all incidence
-        </button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="bg-emerald-600 text-white px-6 py-3 mt-10 rounded-xl shadow-lg hover:bg-emerald-700 mx-auto block text-lg"
+        >
+          📅 View All Today's Incidents
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 export default FinalDashboard;
+
+const SelectInput = ({ label, value, setValue, options }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <select
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 shadow-sm"
+    >
+      {options.map((opt, idx) => (
+        <option key={idx} value={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const ReportSection = ({ title, icon, data, summarizedItems, timelineItems, onSummarize, onTimeline, wide }) => (
+  <motion.div
+    initial={{ y: 10, opacity: 0 }}
+    whileInView={{ y: 0, opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className={`bg-white shadow-xl rounded-3xl p-6 ${wide ? "lg:col-span-2" : ""}`}
+  >
+    <h2 className="text-2xl font-bold text-emerald-700 mb-6 flex items-center">
+      <img src={icon} alt="icon" className="h-6 w-6 mr-3" />
+      {title}
+    </h2>
+    <div className="space-y-4 max-h-[32rem] overflow-y-auto scrollbar-thin scrollbar-thumb-emerald-300 pr-2">
+      {data.map((item) => (
+        <motion.div
+          key={item._id}
+          whileHover={{ scale: 1.01 }}
+          className={`p-4 rounded-xl border ${item.latest ? "bg-emerald-50" : "bg-slate-50"} border-slate-200 flex flex-col gap-3`}
+        >
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="font-semibold text-sm text-gray-500">{item.date}</h1>
+              <p className="text-slate-800 font-medium text-sm pr-4">{item.news}</p>
+            </div>
+            <div className="flex flex-col gap-2 items-end ml-4">
+              <a
+                href={item.link}
+                className="text-emerald-600 text-sm font-bold hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Source
+              </a>
+              <button onClick={() => onSummarize(item.desc, item._id)} className="text-xs bg-white border px-3 py-1 rounded-md hover:bg-emerald-100">
+                Summarize
+              </button>
+              <button onClick={() => onTimeline(item.desc, item._id)} className="text-xs bg-white border px-3 py-1 rounded-md hover:bg-slate-100">
+                Timeline
+              </button>
+            </div>
+          </div>
+
+          {summarizedItems[item._id] && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2 bg-emerald-50 rounded-md p-3">
+              <h3 className="font-semibold text-emerald-800 mb-1">Summary:</h3>
+              <ul className="list-disc ml-5 text-sm text-slate-800">
+                {summarizedItems[item._id].split(". ").map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+
+          {timelineItems[item._id] && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-2 bg-slate-100 rounded-md p-3">
+              <h3 className="font-semibold text-slate-800 mb-1">Timeline:</h3>
+              <ul className="list-disc ml-5 text-sm text-slate-700">
+                {timelineItems[item._id].split(". ").map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+);

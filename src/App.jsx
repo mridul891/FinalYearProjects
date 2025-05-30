@@ -11,6 +11,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import Team from "./Components/Team";
 import ArchiveBox from "./Components/Archieve";
+import Features from "./Components/Features";
 
 const App = () => {
   return (
@@ -26,7 +27,6 @@ const App = () => {
         }}
       />
       <div className="h-screen w-screen bg-[#FEFBFB]">
-        <img src={logo2} />
         <Navbar />
 
         <Routes>
@@ -34,6 +34,8 @@ const App = () => {
           <Route path="/about" element={<Duties />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/features" element={<Features />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/news" element={<News />} />
           <Route path="/finaldashboard" element={<FinalDashboard />} />
